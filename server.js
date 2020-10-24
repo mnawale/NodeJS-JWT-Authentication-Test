@@ -43,28 +43,31 @@ var isRevokedCallback = function(req, payload, done){
       return done(null, !!token);
     });
   };
-
-app.post('/api/login',(req,res) => {
+  
+  
+app.post("/login",(req,res) => {
     const { username, password } =req.body;
 
     for (let user of users ) {
         if (username == user.username && password == user.password) {
-            let token = jwt.sign({ id: user.id, username: user.username}, secretKey, { expiresIn: 180});
-            res.json({
+            let refresh = jwt.sign({ id: user.id, username: user.username},"refresh", { expiresIn: '7d'});
+            let token = jwt.sign({ id: user.id, username: user.username}, secretKey, { expiresIn: 18});
+            return res.status(201).json({
                 success: true,
                 err: null,
-                token
+                token,
+                refresh
             });
+        
             break;
         }
-        else {
-            res.status(401).json({
-                success: false,
-                token: null,
-                err: 'Username or Password is incorrect'
-            });
-        }
-    }
+    }    
+    res.status(401).json({
+        success: false,
+        token: null,
+        err: 'Username or Password is incorrect'
+    });
+        
     
 });
 

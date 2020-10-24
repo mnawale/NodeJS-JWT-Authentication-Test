@@ -40,7 +40,7 @@
                 username: document.getElementById('username').value,
                 password: document.getElementById('password').value
             };
-            axios.post('/api/login',data)
+            axios.post("/login",data)
             .then (res => {
                 console.log(res);
                 document.getElementById('username').value = '';
@@ -65,9 +65,8 @@
                 if (res && res.data && res.data.success) {
                     document.querySelector('h1.row').innerHTML = 'Dashboard';
                     document.querySelector('main').innerHTML = res.data.myContent;
-                    
-                    
                 }
+                
             });
         }
         function getSettings() {
